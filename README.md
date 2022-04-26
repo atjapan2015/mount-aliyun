@@ -37,7 +37,10 @@ java -jar webdav.jar --aliyundrive.refresh-token="your refreshToken"
 ```
 ## 容器运行
 ```bash
-docker run -d --name=webdav-aliyundriver --restart=always -p 8080:8080  -v /etc/localtime:/etc/localtime -v /etc/aliyun-driver/:/etc/aliyun-driver/ -e TZ="Asia/Shanghai" -e ALIYUNDRIVE_REFRESH_TOKEN="your refreshToken" -e ALIYUNDRIVE_AUTH_PASSWORD="admin" -e JAVA_OPTS="-Xmx1g" zx5253/webdav-aliyundriver
+docker build -t atjapan2015/mount-aliyundriver:latest .
+dokcer push atjapan2015/mount-aliyundriver:latest
+mkdir -p /u01/aliyun-driver
+docker run -d --name=aliyundriver --restart=unless-stopped -v /etc/localtime:/etc/localtime -v /u01/aliyun-driver/:/etc/aliyun-driver/ -e TZ="Asia/Shanghai" -e ALIYUNDRIVE_REFRESH_TOKEN="your refreshToken" -e ALIYUNDRIVE_AUTH_PASSWORD="admin" -e JAVA_OPTS="-Xmx1g" atjapan2015/mount-aliyundriver:latest
 
 # /etc/aliyun-driver/ 挂载卷自动维护了最新的refreshToken，建议挂载
 # ALIYUNDRIVE_AUTH_PASSWORD 是admin账户的密码，建议修改
@@ -49,7 +52,7 @@ docker run -d --name=webdav-aliyundriver --restart=always -p 8080:8080  -v /etc/
 version: "3.0"
 services:
   webdav-aliyundriver:
-    image: zx5253/webdav-aliyundriver
+    image: atjapan2015/mount-aliyundriver:latest
     container_name: aliyundriver
     environment:
       - TZ=Asia/Shanghai
@@ -87,29 +90,6 @@ services:
     token挂载路径（如果多开的话，需修改此配置）
     
 ```
-# QQ群
-> 群号（已满）：789738128
-
-> 二群群号（已满）：979024890
-
-> 三群群号（已满）：212673498
-
-> 四群群号（已满）：752067171
-
-> 五群群号：555954095
-
-# 新手教程
-## 群晖
-TODO
-
-## Windows10
-TODO
-
-## Linux
-TODO
-
-## Mac
-TODO
 
 # 客户端兼容性
 | 客户端 | 下载 | 上传 | 备注 |
